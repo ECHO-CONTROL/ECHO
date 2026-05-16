@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 
 <head>
@@ -602,17 +602,21 @@
     .left-panel {
       grid-column: 1;
       grid-row: 1;
+      min-height: 0;
       background: #030e07;
       border-right: 1px solid var(--line-strong);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
     }
 
     .panel-section {
       border-bottom: 1px solid var(--line);
       padding: 10px 12px;
       flex-shrink: 0;
+      min-height: 0;
     }
 
     .panel-label {
@@ -1172,11 +1176,14 @@
     .right-panel {
       grid-column: 3;
       grid-row: 1;
+      min-height: 0;
       background: #030e07;
       border-left: 1px solid var(--line-strong);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
     }
 
     .right-panel .panel-section {
@@ -1215,6 +1222,61 @@
     .right-panel .traffic-labels {
       font-size: 10.5px;
       margin-top: 8px
+    }
+
+    .side-scroll,
+    .left-panel,
+    .right-panel,
+    .fs-icons,
+    .file-zone,
+    .file-window,
+    .term-output {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 255, 157, .34) transparent;
+    }
+
+    .side-scroll::-webkit-scrollbar,
+    .left-panel::-webkit-scrollbar,
+    .right-panel::-webkit-scrollbar,
+    .fs-icons::-webkit-scrollbar,
+    .file-zone::-webkit-scrollbar,
+    .file-window::-webkit-scrollbar,
+    .term-output::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      background: transparent;
+    }
+
+    .side-scroll::-webkit-scrollbar-track,
+    .left-panel::-webkit-scrollbar-track,
+    .right-panel::-webkit-scrollbar-track,
+    .fs-icons::-webkit-scrollbar-track,
+    .file-zone::-webkit-scrollbar-track,
+    .file-window::-webkit-scrollbar-track,
+    .term-output::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .side-scroll::-webkit-scrollbar-thumb,
+    .left-panel::-webkit-scrollbar-thumb,
+    .right-panel::-webkit-scrollbar-thumb,
+    .fs-icons::-webkit-scrollbar-thumb,
+    .file-zone::-webkit-scrollbar-thumb,
+    .file-window::-webkit-scrollbar-thumb,
+    .term-output::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(0, 255, 157, .44), rgba(0, 255, 157, .16));
+      border-radius: 8px;
+      border: 1px solid rgba(0, 255, 157, .08);
+    }
+
+    .side-scroll::-webkit-scrollbar-corner,
+    .left-panel::-webkit-scrollbar-corner,
+    .right-panel::-webkit-scrollbar-corner,
+    .fs-icons::-webkit-scrollbar-corner,
+    .file-zone::-webkit-scrollbar-corner,
+    .file-window::-webkit-scrollbar-corner,
+    .term-output::-webkit-scrollbar-corner {
+      background: transparent;
     }
 
     .terminal-dock {
@@ -1419,6 +1481,29 @@
       height: 80px;
       position: relative;
       margin-top: 4px;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid rgba(0, 255, 157, .10);
+      background:
+        linear-gradient(180deg, rgba(0, 255, 157, .035), transparent),
+        rgba(0, 0, 0, .18);
+    }
+
+    .network-traffic-panel {
+      flex: 0 0 clamp(118px, 20vh, 172px) !important;
+      min-height: 118px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .network-traffic-panel .traffic-graph {
+      flex: 1 1 auto;
+      height: auto;
+    }
+
+    #trafficCanvas {
+      display: block;
+      background: transparent;
     }
 
     .traffic-svg {
@@ -1760,6 +1845,67 @@
       to {
         opacity: 1;
         transform: translateY(0)
+      }
+    }
+
+    @media (max-height:820px) {
+      .left-panel .panel-section {
+        padding: 7px 10px;
+      }
+
+      .left-panel .app-logo {
+        margin-bottom: 6px;
+        font-size: 13px;
+      }
+
+      .left-panel #clockDisplay {
+        font-size: 18px !important;
+      }
+
+      .left-panel .panel-label {
+        margin-bottom: 3px;
+        font-size: 9px;
+      }
+
+      .left-panel .monitor-item {
+        margin-bottom: 5px;
+      }
+
+      .left-panel .spark {
+        height: 11px;
+      }
+
+      .left-panel .proc-table {
+        font-size: 8.8px;
+      }
+
+      .left-panel .status-row {
+        padding: 2px 0;
+        font-size: 9px;
+      }
+    }
+
+    @media (max-height:680px) {
+      .left-panel .panel-section {
+        padding: 5px 9px;
+      }
+
+      .left-panel .monitor-sub,
+      .left-panel .spark,
+      .left-panel .proc-table tr:nth-child(n+5) {
+        display: none;
+      }
+
+      .left-panel #clockDisplay {
+        font-size: 16px !important;
+      }
+
+      .left-panel .monitor-bar {
+        height: 3px;
+      }
+
+      .left-panel .mem-blocks {
+        grid-template-columns: repeat(20, 1fr);
       }
     }
 
@@ -2161,7 +2307,7 @@
         </div>
 
         <!-- Network Traffic -->
-        <div class="panel-section" style="flex:1;display:flex;flex-direction:column">
+        <div class="panel-section network-traffic-panel" style="flex:1;display:flex;flex-direction:column">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
             <div class="panel-label" style="margin-bottom:0">NETWORK TRAFFIC</div>
             <div style="font-size:8.5px;color:var(--dim)">â†‘ UP / â†“ DOWN MB/S</div>
@@ -4827,6 +4973,9 @@ assembly state: ${state.recovery.assembled ? "complete" : state.recovery.keyAcce
       }, 300);
 
       window.addEventListener("resize", () => { resize(); draw() });
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(() => { resize(); draw() }).observe(parent);
+      }
     }
     initTrafficGraph();
 
