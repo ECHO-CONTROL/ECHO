@@ -1799,8 +1799,10 @@
       line-height: 1.5;
       color: var(--amber);
       position: relative;
+      flex: 0 0 auto;
       overflow: hidden;
       animation: hintFadeIn .4s ease;
+      scroll-margin: 10px 0 14px;
     }
 
     .hint-box.visible {
@@ -4726,6 +4728,20 @@ assembly state: ${state.recovery.assembled ? "complete" : state.recovery.keyAcce
         hintBox.style.animation = "none";
         void hintBox.offsetWidth;
         hintBox.style.animation = "";
+        requestAnimationFrame(() => {
+          const panel = hintBox.closest(".left-panel");
+          if (!panel) return;
+          const hintTop = hintBox.offsetTop;
+          const hintBottom = hintTop + hintBox.offsetHeight;
+          const visibleTop = panel.scrollTop;
+          const visibleBottom = visibleTop + panel.clientHeight;
+          if (hintTop < visibleTop || hintBottom > visibleBottom) {
+            panel.scrollTo({
+              top: Math.max(0, hintTop - 12),
+              behavior: "smooth"
+            });
+          }
+        });
         line("");
         line("OPERATOR HINT aktywowany", "amber");
         line("podpowiedź widoczna poniżej TELEMETRIA MASZYNY", "dim");
